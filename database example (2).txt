@@ -1,0 +1,69 @@
+Java JDBC program
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+public class student {
+
+    static final String URL = "jdbc:mysql://localhost:3306/college";
+    static final String USER = "root";
+    static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try
+                (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/college", " ", " ")) {
+
+            System.out.println("1. Add Student");
+            System.out.println("2. View Students");
+            System.out.print("Choose option: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            if (choice == 1) {
+                System.out.print("Enter name: ");
+                String name = sc.nextLine();
+
+                System.out.print("Enter email: ");
+                String email = sc.nextLine();
+
+                System.out.print("Enter course: ");
+                String course = sc.nextLine();
+
+                String insertSQL =
+                        "INSERT INTO student4 ( name, email, course) VALUES (?,?,?)";
+
+                PreparedStatement ps = con.prepareStatement(insertSQL);
+                ps.setString(1, name);
+                ps.setString(2, email);
+                ps.setString(3, course);
+
+                ps.executeUpdate();
+                System.out.println("Student registered successfully!");
+
+            } else if (choice == 2) {
+
+                String selectSQL = "SELECT * FROM student4";
+                PreparedStatement ps = con.prepareStatement(selectSQL);
+                ResultSet rs = ps.executeQuery();
+
+                System.out.println("\n--- Student List ---");
+                while (rs.next()) {
+                    System.out.println(
+                                    rs.getString("name") + " | " +
+                                    rs.getString("email") + " | " +
+                                    rs.getString("course")
+                    );
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
