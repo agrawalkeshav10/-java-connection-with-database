@@ -1,0 +1,13 @@
+CREATE DATABASE college;
+USE college;
+
+CREATE TABLE student (
+     
+    name VARCHAR(100) PRIMARY KEY,
+    email VARCHAR(100),
+    course VARCHAR(50)
+);
+
+
+
+
